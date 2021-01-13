@@ -48,8 +48,10 @@ if [ ! -f /etc/postfix/sasl_passwd ]; then
   grep -q "${SMTP_SERVER}" /etc/postfix/sasl_passwd  > /dev/null 2>&1
   if [ $? -gt 0 ]; then
     echo "Adding SASL authentication configuration"
-    echo "[${SMTP_SERVER}]:${SMTP_PORT} ${SMTP_USERNAME}:${SMTP_PASSWORD}" >> /etc/postfix/sasl_passwd
+    echo "${SMTP_SERVER}:${SMTP_PORT} ${SMTP_USERNAME}:${SMTP_PASSWORD}" >> /etc/postfix/sasl_passwd
     postmap /etc/postfix/sasl_passwd
+    chmod 600 /etc/postfix/sasl_passwd.db
+    rm /etc/postfix/sasl_passwd
   fi
 fi
 
